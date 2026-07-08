@@ -9,3 +9,33 @@ export const createPost = async (postData) => {
 export const findPostById = async (id) => Post.findById(id).exec();
 
 export const deletePost = async (id) => Post.findByIdAndDelete(id).exec();
+
+export const addLike = async (id) =>
+    Post.findByIdAndUpdate(
+        id,
+        { $inc: { likes: 1 } },
+        { returnDocument: 'after' }
+    ).exec();
+
+export const findPostsByAuthor = async (author) =>
+    Post.find({ author }).exec();
+
+export const addComment = async (id, comment) =>
+    Post.findByIdAndUpdate(
+        id,
+        { $push: { comments: comment } },
+        { returnDocument: 'after' }
+    ).exec();
+
+export const findPostsByTags = async (tags) =>
+    Post.find({
+        tags: { $in: tags }
+    }).exec();
+
+export const findPostsByPeriod = async (dateFrom, dateTo) =>
+    Post.find({
+        dateCreated: {
+            $gte: new Date(dateFrom),
+            $lte: new Date(dateTo)
+        }
+    }).exec();
