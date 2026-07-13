@@ -2,14 +2,20 @@ import express from 'express';
 import config from './configuration/config.js';
 import mongoose from "mongoose";
 import postRoutes from './routes/post.routes.js';
-
+import accountingRoutes from "./routes/accounting.routes.js";
+import errorHandler from "./middlewares/error.middleware.js";
 const app = express();
+
 
 app.use(express.json());
 
 app.use('/forum', postRoutes);
 
+app.use('/account', accountingRoutes);
+
 app.use((req, res) => res.status(404).type('text/plain; charset=utf-8').send('Not Found'));
+
+app.use(errorHandler);
 
 const connectDB = async () => {
     try {
